@@ -1,14 +1,18 @@
 
 import React from 'react';
 import { Code, Search } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 const Header = () => {
   return (
     <header className="py-6 md:py-10">
       <div className="container flex flex-col items-center text-center">
-        <div className="inline-flex items-center justify-center p-2 bg-primary/10 rounded-lg mb-4">
-          <Code className="w-6 h-6 text-primary mr-2" />
-          <Search className="w-6 h-6 text-primary" />
+        <div className="w-full flex items-center justify-between mb-4">
+          <div className="inline-flex items-center justify-center p-2 bg-primary/10 rounded-lg">
+            <Code className="w-6 h-6 text-primary mr-2" />
+            <Search className="w-6 h-6 text-primary" />
+          </div>
+          <ThemeToggle />
         </div>
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">Portfolio Code Analyzer & Optimizer</h1>
         <p className="text-lg text-muted-foreground max-w-[700px]">
