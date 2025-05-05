@@ -127,63 +127,63 @@ const mockSuggestions = [
     category: "HTML",
     title: "Improve Semantic Structure",
     description: "Replace generic div elements with semantic HTML5 elements like header, main, section, article, and footer to improve accessibility and SEO.",
-    priority: "high"
+    priority: "high" as const
   },
   {
     id: "html-2",
     category: "HTML",
     title: "Add Missing Alt Tags",
     description: "Add descriptive alt text to all images to improve accessibility for screen readers and SEO.",
-    priority: "high"
+    priority: "high" as const
   },
   {
     id: "html-3",
     category: "HTML",
     title: "Improve Meta Tags",
     description: "Add proper meta tags including description, viewport, and open graph tags for better SEO and social sharing.",
-    priority: "medium"
+    priority: "medium" as const
   },
   {
     id: "css-1",
     category: "CSS",
     title: "Implement Responsive Design",
     description: "Replace fixed-width elements with responsive units and add media queries to ensure your portfolio looks great on all devices.",
-    priority: "high"
+    priority: "high" as const
   },
   {
     id: "css-2",
     category: "CSS",
     title: "Modernize Layout Techniques",
     description: "Replace outdated float-based layouts with CSS Grid and Flexbox for more flexible and maintainable layouts.",
-    priority: "medium"
+    priority: "medium" as const
   },
   {
     id: "css-3",
     category: "CSS",
     title: "Optimize CSS Selectors",
     description: "Simplify and consolidate CSS selectors to improve style computation performance and reduce CSS file size.",
-    priority: "low"
+    priority: "low" as const
   },
   {
     id: "javascript-1",
     category: "JavaScript",
     title: "Optimize Event Handlers",
     description: "Implement debouncing and throttling for scroll and resize events to improve performance and reduce unnecessary calculations.",
-    priority: "medium"
+    priority: "medium" as const
   },
   {
     id: "javascript-2",
     category: "JavaScript",
     title: "Update Library Versions",
     description: "Update jQuery and other libraries to their latest versions to benefit from performance improvements and security fixes.",
-    priority: "high"
+    priority: "high" as const
   },
   {
     id: "javascript-3",
     category: "JavaScript",
     title: "Implement Lazy Loading",
     description: "Implement lazy loading for images and videos to improve initial page load performance, especially for portfolio items.",
-    priority: "medium"
+    priority: "medium" as const
   }
 ];
 

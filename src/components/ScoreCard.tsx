@@ -97,8 +97,7 @@ const ScoreCard = ({ title, score, description, category }: ScoreCardProps) => {
         </div>
         <Progress 
           value={displayScore} 
-          className="h-2 mb-2"
-          indicatorClassName={cn(getProgressColor())}
+          className={cn("h-2 mb-2", getProgressColor())}
         />
         <p className="text-sm text-muted-foreground">{description}</p>
       </CardContent>
