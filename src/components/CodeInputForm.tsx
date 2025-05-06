@@ -24,11 +24,18 @@ const CodeInputForm = ({ onSubmit, isAnalyzing }: CodeInputFormProps) => {
     e.preventDefault();
     
     if (activeTab === "url") {
-      if (!urlInput) {
+      if (!urlInput || !urlInput.trim()) {
         toast.error("Please enter a valid URL");
         return;
       }
-      onSubmit("url", urlInput);
+      
+      // Basic URL validation
+      try {
+        new URL(urlInput);
+        onSubmit("url", urlInput);
+      } catch (e) {
+        toast.error("Please enter a valid URL with http:// or https://");
+      }
     } else {
       if (!htmlCode && !cssCode && !jsCode) {
         toast.error("Please enter some code to analyze");

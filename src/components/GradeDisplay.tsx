@@ -19,12 +19,12 @@ const GradeDisplay = ({ score, className }: GradeDisplayProps) => {
   const getGradeColor = () => {
     const grade = getGrade();
     switch (grade) {
-      case "A": return "bg-success text-success-foreground dark:bg-success/80";
-      case "B": return "bg-info text-info-foreground dark:bg-info/80";
-      case "C": return "bg-warning text-warning-foreground dark:bg-warning/80";
+      case "A": return "bg-green-500 text-white dark:bg-green-600";
+      case "B": return "bg-blue-500 text-white dark:bg-blue-600";
+      case "C": return "bg-yellow-500 text-white dark:bg-yellow-600";
       case "D": return "bg-orange-500 text-white dark:bg-orange-600";
-      case "F": return "bg-danger text-danger-foreground dark:bg-danger/80";
-      default: return "bg-muted text-muted-foreground";
+      case "F": return "bg-red-500 text-white dark:bg-red-600";
+      default: return "bg-gray-500 text-white";
     }
   };
 

@@ -1,6 +1,6 @@
 
-// This is a simple mock of code analysis - in a real application, 
-// you would integrate with tools like Lighthouse, ESLint, etc.
+// This is a simple implementation for code analysis
+// In a production app, you'd integrate with more sophisticated tools
 
 interface CodeInput {
   html?: string;
@@ -29,189 +29,194 @@ interface AnalysisResult {
   }[];
 }
 
-// Mock data and analysis functions
-const mockHtmlIssues = [
-  {
-    code: `<div>
-  <img src="profile.jpg" />
-  <h1>John Doe</h1>
-  <div class="social-links">
-    <a href="#">Twitter</a>
-    <a href="#">GitHub</a>
-  </div>
-</div>`,
-    issue: "Missing alt attribute on image and missing semantic HTML structure.",
-    suggestion: "Add descriptive alt text and use semantic elements like <header>, <main>, <footer>, etc."
-  },
-  {
-    code: `<div class="project">
-  <div class="project-img">
-    <img src="project1.jpg" />
-  </div>
-  <div class="project-info">
-    <h3>Project Title</h3>
-    <p>Project description goes here...</p>
-    <a href="project-link.html">View Project</a>
-  </div>
-</div>`,
-    issue: "Missing alt attributes and non-descriptive link text.",
-    suggestion: "Add alt text to images and make link text descriptive (e.g., 'View Project: Project Title')."
-  }
-];
-
-const mockCssIssues = [
-  {
-    code: `.container {
-  width: 960px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.header {
-  position: fixed;
-  width: 100%;
-  height: 60px;
-  background: #333;
-  color: white;
-}`,
-    issue: "Fixed width container will cause horizontal scrolling on smaller screens.",
-    suggestion: "Use max-width instead of fixed width, and add responsive breakpoints with media queries."
-  },
-  {
-    code: `.project-card {
-  float: left;
-  width: 300px;
-  margin-right: 20px;
-  margin-bottom: 20px;
-}
-
-.clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
-}`,
-    issue: "Using float for layout instead of modern techniques.",
-    suggestion: "Replace float-based layouts with CSS Grid or Flexbox for better responsiveness and flexibility."
-  }
-];
-
-const mockJsIssues = [
-  {
-    code: `function animateElements() {
-  document.querySelectorAll('.animate').forEach(function(el) {
-    el.style.opacity = '1';
-    el.style.transform = 'translateY(0)';
-  });
-}
-
-window.onload = function() {
-  animateElements();
+// Helper function to extract basic metrics from code
+const extractMetrics = (code: string, type: 'html' | 'css' | 'js') => {
+  if (!code) return { score: 0, issues: [] };
   
-  window.onscroll = function() {
-    // More animations based on scroll
-    if (window.scrollY > 100) {
-      document.querySelector('header').classList.add('scrolled');
-    } else {
-      document.querySelector('header').classList.remove('scrolled');
+  let score = 70; // Base score
+  const issues = [];
+  
+  if (type === 'html') {
+    // Check for semantic HTML
+    if (!/<(header|main|footer|section|article|nav|aside)/i.test(code)) {
+      issues.push({
+        code: code.slice(0, 200) + (code.length > 200 ? '...' : ''),
+        issue: "Missing semantic HTML structure",
+        suggestion: "Use semantic elements like <header>, <main>, <footer>, etc."
+      });
+      score -= 10;
     }
+    
+    // Check for alt attributes on images
+    if (/<img[^>]+(?!alt=)[^>]*>/i.test(code)) {
+      issues.push({
+        code: code.match(/<img[^>]+(?!alt=)[^>]*>/i)?.[0] || "",
+        issue: "Missing alt attributes on images",
+        suggestion: "Add descriptive alt text to all images"
+      });
+      score -= 10;
+    }
+    
+    // Check for meta tags
+    if (!/<meta name="description"/i.test(code)) {
+      issues.push({
+        code: "<head>...</head>",
+        issue: "Missing meta description tag",
+        suggestion: "Add a meta description tag for better SEO"
+      });
+      score -= 5;
+    }
+  }
+  
+  if (type === 'css') {
+    // Check for responsiveness
+    if (!/@media/i.test(code)) {
+      issues.push({
+        code: code.slice(0, 200) + (code.length > 200 ? '...' : ''),
+        issue: "No responsive design with media queries",
+        suggestion: "Add media queries for different screen sizes"
+      });
+      score -= 15;
+    }
+    
+    // Check for excessive selectors
+    const longSelectors = (code.match(/[.#][^\s,{]+(?=\s*\{)/g) || [])
+      .filter(selector => selector.split(' ').length > 3);
+      
+    if (longSelectors.length > 0) {
+      issues.push({
+        code: longSelectors.slice(0, 2).join('\n'),
+        issue: "Complex CSS selectors can slow rendering",
+        suggestion: "Simplify your CSS selectors and reduce specificity"
+      });
+      score -= 5;
+    }
+  }
+  
+  if (type === 'js') {
+    // Check for addEventListener without cleanup
+    if (/addEventListener/i.test(code) && !/removeEventListener/i.test(code)) {
+      issues.push({
+        code: code.match(/[^\n]*addEventListener[^\n]*/i)?.[0] || "",
+        issue: "Event listeners without cleanup can cause memory leaks",
+        suggestion: "Remove event listeners when they're no longer needed"
+      });
+      score -= 10;
+    }
+    
+    // Check for console.log statements
+    if (/console\.log/i.test(code)) {
+      issues.push({
+        code: code.match(/[^\n]*console\.log[^\n]*/i)?.[0] || "",
+        issue: "Console logs should be removed in production code",
+        suggestion: "Remove or replace console.log with proper error handling"
+      });
+      score -= 5;
+    }
+  }
+  
+  return {
+    score: Math.max(0, Math.min(100, score)),
+    issues
   };
-};`,
-    issue: "Using scroll events without debounce/throttle can cause performance issues.",
-    suggestion: "Implement throttling for scroll events and use IntersectionObserver for element visibility."
-  }
-];
+};
 
-const mockSuggestions = [
-  {
-    id: "html-1",
-    category: "HTML",
-    title: "Improve Semantic Structure",
-    description: "Replace generic div elements with semantic HTML5 elements like header, main, section, article, and footer to improve accessibility and SEO.",
-    priority: "high" as const
-  },
-  {
-    id: "html-2",
-    category: "HTML",
-    title: "Add Missing Alt Tags",
-    description: "Add descriptive alt text to all images to improve accessibility for screen readers and SEO.",
-    priority: "high" as const
-  },
-  {
-    id: "html-3",
-    category: "HTML",
-    title: "Improve Meta Tags",
-    description: "Add proper meta tags including description, viewport, and open graph tags for better SEO and social sharing.",
-    priority: "medium" as const
-  },
-  {
-    id: "css-1",
-    category: "CSS",
-    title: "Implement Responsive Design",
-    description: "Replace fixed-width elements with responsive units and add media queries to ensure your portfolio looks great on all devices.",
-    priority: "high" as const
-  },
-  {
-    id: "css-2",
-    category: "CSS",
-    title: "Modernize Layout Techniques",
-    description: "Replace outdated float-based layouts with CSS Grid and Flexbox for more flexible and maintainable layouts.",
-    priority: "medium" as const
-  },
-  {
-    id: "css-3",
-    category: "CSS",
-    title: "Optimize CSS Selectors",
-    description: "Simplify and consolidate CSS selectors to improve style computation performance and reduce CSS file size.",
-    priority: "low" as const
-  },
-  {
-    id: "javascript-1",
-    category: "JavaScript",
-    title: "Optimize Event Handlers",
-    description: "Implement debouncing and throttling for scroll and resize events to improve performance and reduce unnecessary calculations.",
-    priority: "medium" as const
-  },
-  {
-    id: "javascript-2",
-    category: "JavaScript",
-    title: "Update Library Versions",
-    description: "Update jQuery and other libraries to their latest versions to benefit from performance improvements and security fixes.",
-    priority: "high" as const
-  },
-  {
-    id: "javascript-3",
-    category: "JavaScript",
-    title: "Implement Lazy Loading",
-    description: "Implement lazy loading for images and videos to improve initial page load performance, especially for portfolio items.",
-    priority: "medium" as const
-  }
-];
-
-// This would be replaced with actual analysis in a production app
 export const analyzeCode = async (inputType: string, inputValue: string): Promise<AnalysisResult> => {
   // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 1000));
   
   console.log("Analyzing:", inputType);
   
-  // For URL inputs, we would use tools like Lighthouse or custom web scrapers
-  // For now, we'll return mock data regardless of input
+  let htmlCode = "";
+  let cssCode = "";
+  let jsCode = "";
   
-  // In a real app, this score would be calculated based on analysis
-  const generateRandomScore = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+  // Parse the input based on type
+  if (inputType === "url") {
+    // In a real app, we would fetch the URL's content
+    // For this demo, we'll just add a mock example for URL input
+    htmlCode = `<div class="container">
+  <img src="profile.jpg">
+  <div class="header">
+    <h1>John Doe - Portfolio</h1>
+  </div>
+  <div class="projects">
+    <div class="project">Project 1</div>
+  </div>
+</div>`;
+  } else if (inputType === "code") {
+    try {
+      const parsedCode = JSON.parse(inputValue);
+      htmlCode = parsedCode.html || "";
+      cssCode = parsedCode.css || "";
+      jsCode = parsedCode.js || "";
+    } catch (error) {
+      console.error("Failed to parse code input:", error);
+      htmlCode = inputValue; // Assume it's just HTML if parsing fails
+    }
+  }
+  
+  // Analyze each code type
+  const htmlAnalysis = extractMetrics(htmlCode, 'html');
+  const cssAnalysis = extractMetrics(cssCode, 'css');
+  const jsAnalysis = extractMetrics(jsCode, 'js');
+  
+  // Generate overall scores
+  const performanceScore = Math.round((cssAnalysis.score * 0.4) + (jsAnalysis.score * 0.6));
+  const seoScore = Math.round((htmlAnalysis.score * 0.7) + (cssAnalysis.score * 0.3));
+  const accessibilityScore = Math.round((htmlAnalysis.score * 0.8) + (cssAnalysis.score * 0.2));
+  const bestPracticesScore = Math.round(
+    (htmlAnalysis.score * 0.4) + (cssAnalysis.score * 0.3) + (jsAnalysis.score * 0.3)
+  );
+  
+  // Generate suggestions based on issues found
+  const suggestions = [
+    ...htmlAnalysis.issues.map((issue, idx) => ({
+      id: `html-${idx}`,
+      category: "HTML",
+      title: issue.issue,
+      description: issue.suggestion || "",
+      priority: "high" as const
+    })),
+    ...cssAnalysis.issues.map((issue, idx) => ({
+      id: `css-${idx}`,
+      category: "CSS",
+      title: issue.issue,
+      description: issue.suggestion || "",
+      priority: "medium" as const
+    })),
+    ...jsAnalysis.issues.map((issue, idx) => ({
+      id: `js-${idx}`,
+      category: "JavaScript",
+      title: issue.issue,
+      description: issue.suggestion || "",
+      priority: "low" as const
+    }))
+  ];
+  
+  // If no issues were found, add some general suggestions
+  if (suggestions.length === 0) {
+    suggestions.push({
+      id: "general-1",
+      category: "General",
+      title: "Add more content to analyze",
+      description: "For a more detailed analysis, provide more code or a complete URL.",
+      priority: "medium" as const
+    });
+  }
   
   return {
     scores: {
-      performance: generateRandomScore(60, 85),
-      seo: generateRandomScore(65, 90),
-      accessibility: generateRandomScore(55, 80),
-      bestPractices: generateRandomScore(70, 95)
+      performance: performanceScore,
+      seo: seoScore,
+      accessibility: accessibilityScore,
+      bestPractices: bestPracticesScore
     },
     codeExamples: {
-      html: mockHtmlIssues,
-      css: mockCssIssues,
-      js: mockJsIssues
+      html: htmlAnalysis.issues,
+      css: cssAnalysis.issues,
+      js: jsAnalysis.issues
     },
-    suggestions: mockSuggestions
+    suggestions: suggestions
   };
 };
