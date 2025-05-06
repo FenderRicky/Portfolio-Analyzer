@@ -5,23 +5,1613 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portfolio-Analyzer</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
-
-    <meta property="og:title" content="portfolio-analyzer" />
-    <meta property="og:description" content="Lovable Generated Project" />
+    <meta name="description" content="Your Ultimate Portfolio Analysis Tool" />
+    <meta name="author" content="Portfolio Expert" />
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1014/1014469.png" type="image/png">
+    
+    <meta property="og:title" content="Portfolio-Analyzer" />
+    <meta property="og:description" content="Your Ultimate Portfolio Analysis Tool" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta name="twitter:site" content="@portfolio_expert" />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b" />
+    
+    <style>
+      :root {
+        --background: 210 40% 98%;
+        --foreground: 222.2 84% 4.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 222.2 84% 4.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222.2 84% 4.9%;
+        --primary: 221 83% 53%;
+        --primary-foreground: 210 40% 98%;
+        --secondary: 173 80% 32%;
+        --secondary-foreground: 210 40% 98%;
+        --muted: 210 40% 96.1%;
+        --muted-foreground: 215.4 16.3% 46.9%;
+        --accent: 194 95% 43%;
+        --accent-foreground: 222.2 47.4% 11.2%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 210 40% 98%;
+        --border: 214.3 31.8% 91.4%;
+        --input: 214.3 31.8% 91.4%;
+        --ring: 221 83% 53%;
+        --radius: 0.5rem;
+        --success: 142 71% 45%;
+        --success-foreground: 210 40% 98%;
+        --info: 221 83% 53%;
+        --info-foreground: 210 40% 98%;
+        --warning: 38 92% 50%;
+        --warning-foreground: 210 40% 98%;
+        --danger: 0 84.2% 60.2%;
+        --danger-foreground: 210 40% 98%;
+      }
+
+      .dark {
+        --background: 222.2 84% 4.9%;
+        --foreground: 210 40% 98%;
+        --card: 222.2 84% 4.9%;
+        --card-foreground: 210 40% 98%;
+        --popover: 222.2 84% 4.9%;
+        --popover-foreground: 210 40% 98%;
+        --primary: 217.2 91.2% 59.8%;
+        --primary-foreground: 222.2 47.4% 11.2%;
+        --secondary: 173 80% 32%;
+        --secondary-foreground: 210 40% 98%;
+        --muted: 217.2 32.6% 17.5%;
+        --muted-foreground: 215 20.2% 65.1%;
+        --accent: 194 95% 43%;
+        --accent-foreground: 210 40% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 210 40% 98%;
+        --border: 217.2 32.6% 17.5%;
+        --input: 217.2 32.6% 17.5%;
+        --ring: 224.3 76.3% 48%;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+      }
+
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap');
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: hsl(var(--background));
+        color: hsl(var(--foreground));
+        transition: background-color 0.5s ease, color 0.5s ease;
+        overflow-x: hidden;
+      }
+
+      #app {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        padding: 2rem 0;
+        position: relative;
+        overflow: hidden;
+        border-radius: 1rem;
+        backdrop-filter: blur(10px);
+        background: linear-gradient(135deg, hsla(var(--accent), 0.1), hsla(var(--primary), 0.1));
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .container {
+        width: 100%;
+        padding: 0 1rem;
+      }
+
+      .header-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 2rem;
+      }
+
+      .logo-container {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background-color: hsla(var(--primary), 0.1);
+        border-radius: 0.75rem;
+      }
+
+      .logo-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 0.5rem;
+        fill: hsl(var(--primary));
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-family: 'Space Grotesk', sans-serif;
+      }
+
+      .description {
+        font-size: 1.125rem;
+        color: hsl(var(--muted-foreground));
+        max-width: 700px;
+        margin-bottom: 1.5rem;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transform-origin: center;
+      }
+
+      .tag:hover {
+        transform: scale(1.1);
+      }
+
+      .tag-primary {
+        background-color: hsla(var(--primary), 0.1);
+        color: hsl(var(--primary));
+      }
+
+      .tag-secondary {
+        background-color: hsla(var(--secondary), 0.1);
+        color: hsl(var(--secondary));
+      }
+
+      .tag-accent {
+        background-color: hsla(var(--accent), 0.1);
+        color: hsl(var(--accent));
+      }
+
+      .tag-success {
+        background-color: hsla(var(--success), 0.1);
+        color: hsl(var(--success));
+      }
+
+      .tag-warning {
+        background-color: hsla(var(--warning), 0.1);
+        color: hsl(var(--warning));
+      }
+
+      /* Theme Toggle Switch */
+      .theme-switch {
+        position: relative;
+        width: 60px;
+        height: 30px;
+        background-color: hsla(var(--muted), 1);
+        border-radius: 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        padding: 0 5px;
+        box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      }
+
+      .switch-handle {
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        left: 4px;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+      }
+
+      .theme-switch[data-theme="dark"] {
+        background-color: hsla(var(--muted), 1);
+      }
+
+      .theme-switch[data-theme="dark"] .switch-handle {
+        left: 34px;
+        background: #313131;
+      }
+
+      .switch-icon {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .sun-icon {
+        left: 6px;
+        fill: hsl(38, 92%, 50%);
+      }
+
+      .moon-icon {
+        right: 6px;
+        fill: hsl(217, 91%, 60%);
+      }
+
+      .theme-switch[data-theme="light"] .sun-icon,
+      .theme-switch[data-theme="dark"] .moon-icon {
+        opacity: 1;
+      }
+
+      /* Main Content Styles */
+      .main-content {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      @media (min-width: 768px) {
+        .main-content {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .card {
+        background-color: hsl(var(--card));
+        border-radius: var(--radius);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
+      }
+
+      .card-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid hsl(var(--border));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .card-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        fill: hsl(var(--primary));
+      }
+
+      .card-content {
+        padding: 1.5rem;
+      }
+
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+      }
+
+      label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: hsl(var(--muted-foreground));
+      }
+
+      textarea, input[type="url"] {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: hsl(var(--input));
+        border: 1px solid hsl(var(--border));
+        border-radius: var(--radius);
+        color: hsl(var(--foreground));
+        font-family: 'JetBrains Mono', monospace;
+        resize: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      textarea:focus, input:focus {
+        outline: none;
+        border-color: hsl(var(--ring));
+        box-shadow: 0 0 0 2px hsla(var(--ring), 0.3);
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1.5rem;
+        background-color: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        border-radius: var(--radius);
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        gap: 0.5rem;
+      }
+
+      .button:hover {
+        background-color: hsl(var(--primary), 0.9);
+        transform: translateY(-2px);
+      }
+
+      .button:active {
+        transform: translateY(0);
+      }
+
+      .button-icon {
+        width: 1rem;
+        height: 1rem;
+        fill: currentColor;
+      }
+
+      /* Results Section */
+      .results-container {
+        margin-top: 2rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 768px) {
+        .results-container {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .score-card {
+        background-color: hsl(var(--card));
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .score-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, hsla(var(--primary), 0.05), hsla(var(--accent), 0.05));
+        z-index: 0;
+      }
+
+      .score-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .score-label {
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .score-value {
+        font-size: 3rem;
+        font-weight: 700;
+        color: hsl(var(--primary));
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .score-ring {
+        width: 120px;
+        height: 120px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+
+      .ring-bg {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: absolute;
+        border: 8px solid hsl(var(--muted));
+      }
+
+      .ring-progress {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: absolute;
+        border: 8px solid;
+        border-color: hsl(var(--primary));
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        transform: rotate(-45deg);
+        transition: all 1s ease;
+      }
+
+      .score-value-small {
+        position: relative;
+        z-index: 1;
+        font-size: 2rem;
+        font-weight: 700;
+      }
+
+      .score-description {
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
+        margin-top: 0.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Analysis Results */
+      .analysis-results {
+        background-color: hsl(var(--card));
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
+      }
+
+      .analysis-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+      }
+
+      .analysis-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid hsl(var(--border));
+        padding-bottom: 0.5rem;
+      }
+
+      .tab {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border-radius: var(--radius);
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .tab.active {
+        background-color: hsla(var(--primary), 0.1);
+        color: hsl(var(--primary));
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Code Block */
+      .code-block {
+        background-color: hsl(240, 10%, 3.9%);
+        color: hsl(0, 0%, 98%);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.875rem;
+        padding: 1rem;
+        border-radius: var(--radius);
+        overflow: auto;
+        position: relative;
+      }
+
+      .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background-color: hsl(240, 5%, 10%);
+        border-top-left-radius: var(--radius);
+        border-top-right-radius: var(--radius);
+        font-size: 0.75rem;
+        color: hsl(240, 5%, 64.9%);
+      }
+
+      .code-content {
+        padding: 1rem;
+      }
+
+      .code-line {
+        display: flex;
+      }
+
+      .line-number {
+        color: hsl(240, 5%, 40%);
+        text-align: right;
+        padding-right: 1rem;
+        user-select: none;
+      }
+
+      .line-content {
+        flex: 1;
+      }
+
+      .code-token-comment {
+        color: hsl(240, 5%, 64.9%);
+      }
+
+      .code-token-keyword {
+        color: hsl(217, 91.2%, 59.8%);
+      }
+
+      .code-token-string {
+        color: hsl(142, 71%, 45%);
+      }
+
+      .code-token-function {
+        color: hsl(291, 64%, 42%);
+      }
+
+      .code-token-operator {
+        color: hsl(37, 92%, 50%);
+      }
+
+      /* Suggestions List */
+      .suggestions-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .suggestion-item {
+        background-color: hsla(var(--muted), 0.5);
+        border-radius: var(--radius);
+        padding: 1rem;
+        border-left: 4px solid hsl(var(--primary));
+      }
+
+      .suggestion-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .suggestion-icon {
+        width: 1rem;
+        height: 1rem;
+        fill: hsl(var(--primary));
+      }
+
+      .suggestion-description {
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
+      }
+
+      /* Benchmark Comparison */
+      .benchmark-chart {
+        height: 250px;
+        margin-top: 1rem;
+        position: relative;
+      }
+
+      .chart-bars {
+        display: flex;
+        align-items: flex-end;
+        height: 200px;
+        gap: 1.5rem;
+        padding-bottom: 30px;
+      }
+
+      .chart-bar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+      }
+
+      .bar {
+        width: 100%;
+        background: linear-gradient(180deg, hsl(var(--primary)), hsla(var(--primary), 0.5));
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        transition: height 1s ease;
+      }
+
+      .your-site .bar {
+        background: linear-gradient(180deg, hsl(var(--accent)), hsla(var(--accent), 0.5));
+      }
+
+      .bar-label {
+        font-size: 0.75rem;
+        color: hsl(var(--muted-foreground));
+        margin-top: 0.5rem;
+        text-align: center;
+      }
+
+      .bar-value {
+        font-size: 0.875rem;
+        font-weight: 600;
+        position: absolute;
+        top: -25px;
+      }
+
+      .chart-baseline {
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: hsl(var(--border));
+      }
+
+      /* Automated Fixes */
+      .fixes-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .fix-item {
+        background-color: hsla(var(--muted), 0.5);
+        border-radius: var(--radius);
+        padding: 1rem;
+        border-left: 4px solid hsl(var(--success));
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .fix-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .fix-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+      }
+
+      .fix-title {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .fix-icon {
+        width: 1rem;
+        height: 1rem;
+        fill: hsl(var(--success));
+      }
+
+      .fix-apply {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        background-color: hsla(var(--success), 0.1);
+        color: hsl(var(--success));
+        border-radius: 0.25rem;
+        cursor: pointer;
+      }
+
+      .fix-description {
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
+      }
+
+      .fix-diff {
+        background-color: hsl(240, 10%, 3.9%);
+        color: hsl(0, 0%, 98%);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75rem;
+        padding: 0.75rem;
+        border-radius: var(--radius);
+        margin-top: 0.75rem;
+        overflow: auto;
+      }
+
+      .diff-removed {
+        color: hsl(0, 84.2%, 60.2%);
+      }
+
+      .diff-added {
+        color: hsl(142, 71%, 45%);
+      }
+
+      /* Animations and Effects */
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .float {
+        animation: float 5s ease-in-out infinite;
+      }
+
+      .pulse {
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      /* Background particles */
+      #particles-js {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      /* Loading spinner */
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid hsla(var(--muted), 0.3);
+        border-top: 4px solid hsl(var(--primary));
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 2rem auto;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      /* Responsive Utils */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 1.75rem;
+        }
+        
+        .main-content {
+          grid-template-columns: 1fr;
+        }
+        
+        .results-container {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* 3D effect for cards */
+      .tilt-card {
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+
+      .tilt-card-inner {
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+      }
+
+      /* Badge */
+      .badge {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: linear-gradient(45deg, hsl(var(--primary)), hsl(var(--accent)));
+        color: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transform: rotate(15deg);
+      }
+
+      /* Sparkles and decorative elements */
+      .sparkle {
+        position: absolute;
+        background-color: hsla(var(--accent), 0.7);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .decorative-circle {
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(45deg, hsla(var(--primary), 0.1), hsla(var(--accent), 0.1));
+        z-index: 0;
+      }
+
+      /* Glassmorphism */
+      .glass {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background: hsla(var(--background), 0.5);
+        border: 1px solid hsla(var(--border), 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Cursor glow effect */
+      .glow-cursor {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: hsla(var(--accent), 0.5);
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        mix-blend-mode: screen;
+        transform: translate(-50%, -50%);
+        transition: width 0.2s, height 0.2s;
+        filter: blur(5px);
+      }
+
+      /* Toast notification */
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 1rem;
+        background-color: hsl(var(--popover));
+        color: hsl(var(--popover-foreground));
+        border-radius: var(--radius);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        transform: translateX(120%);
+        transition: transform 0.3s ease;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+      }
+
+      .toast-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        fill: hsl(var(--primary));
+      }
+
+      .toast-close {
+        cursor: pointer;
+        margin-left: 0.5rem;
+      }
+    </style>
   </head>
 
   <body>
-    <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="particles-js"></div>
+    <div class="glow-cursor"></div>
+
+    <div id="app">
+      <header>
+        <div class="decorative-circle" style="width: 300px; height: 300px; top: -150px; left: -150px; opacity: 0.4;"></div>
+        <div class="decorative-circle" style="width: 200px; height: 200px; bottom: -100px; right: -100px; opacity: 0.3;"></div>
+        
+        <div class="container">
+          <div class="header-content">
+            <div class="header-top">
+              <div class="logo-container">
+                <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+                  <line x1="16" y1="8" x2="2" y2="22"></line>
+                  <line x1="17.5" y1="15" x2="9" y2="15"></line>
+                </svg>
+                <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+              
+              <div class="theme-switch" data-theme="light">
+                <div class="switch-handle"></div>
+                <svg class="switch-icon sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <line x1="12" y1="1" x2="12" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="23"></line>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                  <line x1="1" y1="12" x2="3" y2="12"></line>
+                  <line x1="21" y1="12" x2="23" y2="12"></line>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="switch-icon moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+              </div>
+            </div>
+            
+            <h1 class="float">Portfolio Code Analyzer & Optimizer</h1>
+            <p class="description">
+              Benchmark your portfolio against elite websites with AI-powered analysis and actionable improvements.
+            </p>
+            
+            <div class="tags">
+              <span class="tag tag-primary">Semantic HTML</span>
+              <span class="tag tag-secondary">CSS Analysis</span>
+              <span class="tag tag-accent">JavaScript Optimization</span>
+              <span class="tag tag-success">SEO Insights</span>
+              <span class="tag tag-warning">Performance Tuning</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <div class="main-content">
+          <div class="card tilt-card">
+            <div class="tilt-card-inner">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 18l6-6-6-6"></path>
+                    <path d="M8 6l-6 6 6 6"></path>
+                  </svg>
+                  Code Input
+                </h2>
+              </div>
+              
+              <div class="card-content">
+                <form id="code-form">
+                  <div class="input-group">
+                    <label for="website-url">Website URL (Optional)</label>
+                    <input type="url" id="website-url" placeholder="https://yourwebsite.com" />
+                  </div>
+                  
+                  <div class="input-group">
+                    <label for="code-input">Paste your HTML, CSS or JavaScript code</label>
+                    <textarea id="code-input" rows="10" placeholder="Paste your code here..."></textarea>
+                  </div>
+                  
+                  <button type="submit" class="button">
+                    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12" y2="8"></line>
+                    </svg>
+                    Analyze Code
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="card tilt-card">
+            <div class="badge">NEW</div>
+            <div class="tilt-card-inner">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 20v-7a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v7"></path>
+                    <rect x="8" y="2" width="8" height="8" rx="1" ry="1"></rect>
+                  </svg>
+                  Portfolio Grader
+                </h2>
+              </div>
+              
+              <div class="card-content">
+                <p>Our AI-powered tool identifies areas for improvement in your portfolio site code. Upload your code to get:</p>
+                
+                <ul class="features-list">
+                  <li>Performance optimization tips</li>
+                  <li>Accessibility improvements</li>
+                  <li>SEO recommendations</li>
+                  <li>Best practices analysis</li>
+                  <li>Code quality scoring</li>
+                </ul>
+                
+                <div class="spinner hidden" id="loading-spinner"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="results-section" class="hidden">
+          <div class="results-container">
+            <div class="score-card">
+              <div class="score-label">Performance Score</div>
+              <div class="score-ring">
+                <div class="ring-bg"></div>
+                <div class="ring-progress" style="transform: rotate(45deg);"></div>
+                <div class="score-value-small">0</div>
+              </div>
+              <div class="score-description">How well your code is optimized for speed and efficiency</div>
+            </div>
+            
+            <div class="score-card">
+              <div class="score-label">Best Practices</div>
+              <div class="score-ring">
+                <div class="ring-bg"></div>
+                <div class="ring-progress" style="transform: rotate(45deg);"></div>
+                <div class="score-value-small">0</div>
+              </div>
+              <div class="score-description">How well your code follows modern web development standards</div>
+            </div>
+            
+            <div class="score-card">
+              <div class="score-label">Overall Grade</div>
+              <div class="score-value">F</div>
+              <div class="score-description">Cumulative score based on all analyzed metrics</div>
+            </div>
+          </div>
+
+          <div class="analysis-results">
+            <div class="analysis-header">
+              <h2 class="analysis-title">
+                <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Detailed Analysis
+              </h2>
+            </div>
+            
+            <div class="tabs">
+              <div class="tab active" data-tab="suggestions">Suggestions</div>
+              <div class="tab" data-tab="benchmark">Benchmark</div>
+              <div class="tab" data-tab="fixes">Automated Fixes</div>
+            </div>
+            
+            <div class="tab-content active" id="suggestions-tab">
+              <div class="suggestions-list">
+                <div class="suggestion-item">
+                  <div class="suggestion-title">
+                    <svg class="suggestion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12" y2="8"></line>
+                    </svg>
+                    Add Semantic HTML Elements
+                  </div>
+                  <div class="suggestion-description">
+                    Replace generic div elements with semantic HTML5 elements like header, nav, main, section, article, and footer to improve accessibility and SEO.
+                  </div>
+                </div>
+                
+                <div class="suggestion-item">
+                  <div class="suggestion-title">
+                    <svg class="suggestion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12" y2="8"></line>
+                    </svg>
+                    Optimize CSS Selectors
+                  </div>
+                  <div class="suggestion-description">
+                    Your CSS selectors are too specific and complex. Simplify them to improve rendering performance and maintenance.
+                  </div>
+                </div>
+                
+                <div class="suggestion-item">
+                  <div class="suggestion-title">
+                    <svg class="suggestion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12" y2="8"></line>
+                    </svg>
+                    Implement Responsive Design
+                  </div>
+                  <div class="suggestion-description">
+                    Add media queries to ensure your portfolio displays correctly on mobile devices. Currently, your layout breaks on screens smaller than 768px.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="tab-content" id="benchmark-tab">
+              <div class="benchmark-chart">
+                <div class="chart-bars">
+                  <div class="chart-bar your-site">
+                    <div class="bar" style="height: 40px;">
+                      <div class="bar-value">40%</div>
+                    </div>
+                    <div class="bar-label">Your Site</div>
+                  </div>
+                  <div class="chart-bar">
+                    <div class="bar" style="height: 75px;">
+                      <div class="bar-value">75%</div>
+                    </div>
+                    <div class="bar-label">Industry Avg</div>
+                  </div>
+                  <div class="chart-bar">
+                    <div class="bar" style="height: 95px;">
+                      <div class="bar-value">95%</div>
+                    </div>
+                    <div class="bar-label">Top Sites</div>
+                  </div>
+                </div>
+                <div class="chart-baseline"></div>
+              </div>
+              <p class="benchmark-description">
+                Your site scores significantly lower than both the industry average and top-performing sites in your category. Focus on the suggested improvements to boost your score.
+              </p>
+            </div>
+            
+            <div class="tab-content" id="fixes-tab">
+              <div class="fixes-list">
+                <div class="fix-item">
+                  <div class="fix-header">
+                    <div class="fix-title">
+                      <svg class="fix-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v4"></path>
+                        <path d="M12 18v4"></path>
+                        <path d="M4.93 4.93l2.83 2.83"></path>
+                        <path d="M16.24 16.24l2.83 2.83"></path>
+                        <path d="M2 12h4"></path>
+                        <path d="M18 12h4"></path>
+                        <path d="M4.93 19.07l2.83-2.83"></path>
+                        <path d="M16.24 7.76l2.83-2.83"></path>
+                      </svg>
+                      Add Meta Viewport Tag
+                    </div>
+                    <div class="fix-apply">Apply Fix</div>
+                  </div>
+                  <div class="fix-description">
+                    Missing viewport meta tag is preventing proper mobile display
+                  </div>
+                  <div class="fix-diff">
+                    <div class="diff-added">+ &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</div>
+                  </div>
+                </div>
+                
+                <div class="fix-item">
+                  <div class="fix-header">
+                    <div class="fix-title">
+                      <svg class="fix-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v4"></path>
+                        <path d="M12 18v4"></path>
+                        <path d="M4.93 4.93l2.83 2.83"></path>
+                        <path d="M16.24 16.24l2.83 2.83"></path>
+                        <path d="M2 12h4"></path>
+                        <path d="M18 12h4"></path>
+                        <path d="M4.93 19.07l2.83-2.83"></path>
+                        <path d="M16.24 7.76l2.83-2.83"></path>
+                      </svg>
+                      Add Alt Text to Images
+                    </div>
+                    <div class="fix-apply">Apply Fix</div>
+                  </div>
+                  <div class="fix-description">
+                    Missing alt attributes on images creates accessibility issues
+                  </div>
+                  <div class="fix-diff">
+                    <div class="diff-removed">- &lt;img src="portfolio-image.jpg"&gt;</div>
+                    <div class="diff-added">+ &lt;img src="portfolio-image.jpg" alt="Portfolio project screenshot"&gt;</div>
+                  </div>
+                </div>
+                
+                <div class="fix-item">
+                  <div class="fix-header">
+                    <div class="fix-title">
+                      <svg class="fix-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v4"></path>
+                        <path d="M12 18v4"></path>
+                        <path d="M4.93 4.93l2.83 2.83"></path>
+                        <path d="M16.24 16.24l2.83 2.83"></path>
+                        <path d="M2 12h4"></path>
+                        <path d="M18 12h4"></path>
+                        <path d="M4.93 19.07l2.83-2.83"></path>
+                        <path d="M16.24 7.76l2.83-2.83"></path>
+                      </svg>
+                      Minify CSS
+                    </div>
+                    <div class="fix-apply">Apply Fix</div>
+                  </div>
+                  <div class="fix-description">
+                    Unminified CSS increases page load time
+                  </div>
+                  <div class="fix-diff">
+                    <div class="diff-removed">- .element { color: #333; margin: 20px; padding: 10px; }</div>
+                    <div class="diff-added">+ .element{color:#333;margin:20px;padding:10px}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <div class="toast" id="toast">
+        <svg class="toast-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+          <line x1="9" y1="9" x2="9.01" y2="9"></line>
+          <line x1="15" y1="9" x2="15.01" y2="9"></line>
+        </svg>
+        <div class="toast-content">
+          <div class="toast-title">Success!</div>
+          <div class="toast-message">Your code has been analyzed successfully.</div>
+        </div>
+        <div class="toast-close">×</div>
+      </div>
+    </div>
+
+    <!-- Load particles.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Theme toggle functionality
+        const themeSwitch = document.querySelector('.theme-switch');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.toggle('dark', savedTheme === 'dark');
+        themeSwitch.setAttribute('data-theme', savedTheme);
+        
+        themeSwitch.addEventListener('click', () => {
+          const currentTheme = themeSwitch.getAttribute('data-theme');
+          const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+          
+          html.classList.toggle('dark', newTheme === 'dark');
+          themeSwitch.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          
+          // Add a sparkle effect when switching themes
+          createSparkles(20);
+        });
+        
+        // Tab switching functionality
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            const tabId = tab.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and content
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            // Add active class to selected tab and content
+            tab.classList.add('active');
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+          });
+        });
+        
+        // Form submission handler
+        const codeForm = document.getElementById('code-form');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const resultsSection = document.getElementById('results-section');
+        
+        codeForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          // Show loading spinner
+          loadingSpinner.classList.remove('hidden');
+          
+          // Simulate loading delay
+          setTimeout(() => {
+            loadingSpinner.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+            
+            // Animate score rings
+            animateScoreRings();
+            
+            // Show toast notification
+            showToast('Success!', 'Your code has been analyzed successfully.');
+            
+            // Animate chart bars
+            animateChartBars();
+          }, 1500);
+        });
+        
+        // Apply fix buttons
+        const applyFixButtons = document.querySelectorAll('.fix-apply');
+        applyFixButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            const fixItem = button.closest('.fix-item');
+            fixItem.style.borderLeftColor = 'hsl(var(--accent))';
+            button.innerText = 'Applied!';
+            button.style.backgroundColor = 'hsla(var(--accent), 0.1)';
+            button.style.color = 'hsl(var(--accent))';
+            
+            // Show toast
+            const fixTitle = fixItem.querySelector('.fix-title').innerText;
+            showToast('Fix Applied!', `"${fixTitle}" has been applied.`);
+          });
+        });
+        
+        // 3D tilt effect for cards
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(card => {
+          card.addEventListener('mousemove', (e) => {
+            const cardRect = card.getBoundingClientRect();
+            const x = e.clientX - cardRect.left;
+            const y = e.clientY - cardRect.top;
+            
+            const centerX = cardRect.width / 2;
+            const centerY = cardRect.height / 2;
+            
+            const angleX = (y - centerY) / 15;
+            const angleY = (centerX - x) / 15;
+            
+            card.querySelector('.tilt-card-inner').style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            card.querySelector('.tilt-card-inner').style.transform = 'rotateX(0) rotateY(0)';
+          });
+        });
+        
+        // Initialize particles.js
+        if (typeof particlesJS !== 'undefined') {
+          particlesJS('particles-js', {
+            particles: {
+              number: { value: 30, density: { enable: true, value_area: 800 } },
+              color: { value: '#3B82F6' },
+              shape: { type: 'circle' },
+              opacity: { value: 0.3, random: true },
+              size: { value: 5, random: true },
+              line_linked: { enable: true, distance: 150, color: '#3B82F6', opacity: 0.2, width: 1 },
+              move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+            },
+            interactivity: {
+              detect_on: 'canvas',
+              events: {
+                onhover: { enable: true, mode: 'grab' },
+                onclick: { enable: true, mode: 'push' },
+                resize: true
+              },
+              modes: {
+                grab: { distance: 140, line_linked: { opacity: 0.8 } },
+                push: { particles_nb: 3 }
+              }
+            }
+          });
+        }
+        
+        // Cursor glow effect
+        const glowCursor = document.querySelector('.glow-cursor');
+        document.addEventListener('mousemove', (e) => {
+          glowCursor.style.left = `${e.clientX}px`;
+          glowCursor.style.top = `${e.clientY}px`;
+        });
+        
+        document.addEventListener('mousedown', () => {
+          glowCursor.style.width = '30px';
+          glowCursor.style.height = '30px';
+        });
+        
+        document.addEventListener('mouseup', () => {
+          glowCursor.style.width = '20px';
+          glowCursor.style.height = '20px';
+        });
+        
+        // Create sparkles function
+        function createSparkles(count) {
+          for (let i = 0; i < count; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            
+            const size = Math.random() * 10 + 5;
+            sparkle.style.width = `${size}px`;
+            sparkle.style.height = `${size}px`;
+            
+            const top = Math.random() * window.innerHeight;
+            const left = Math.random() * window.innerWidth;
+            
+            sparkle.style.top = `${top}px`;
+            sparkle.style.left = `${left}px`;
+            
+            document.body.appendChild(sparkle);
+            
+            // Animate and remove sparkle
+            setTimeout(() => {
+              sparkle.style.opacity = '0';
+              setTimeout(() => {
+                document.body.removeChild(sparkle);
+              }, 500);
+            }, Math.random() * 1000 + 500);
+          }
+        }
+        
+        // Toast notification
+        const toast = document.getElementById('toast');
+        const toastTitle = toast.querySelector('.toast-title');
+        const toastMessage = toast.querySelector('.toast-message');
+        const toastClose = toast.querySelector('.toast-close');
+        
+        function showToast(title, message) {
+          toastTitle.textContent = title;
+          toastMessage.textContent = message;
+          toast.classList.add('show');
+          
+          setTimeout(() => {
+            toast.classList.remove('show');
+          }, 5000);
+        }
+        
+        toastClose.addEventListener('click', () => {
+          toast.classList.remove('show');
+        });
+        
+        // Animate score rings
+        function animateScoreRings() {
+          const scoreRings = document.querySelectorAll('.ring-progress');
+          const scoreValues = document.querySelectorAll('.score-value-small');
+          
+          const scores = [67, 82]; // Performance and Best Practices scores
+          
+          // Animate rings and values
+          scoreRings.forEach((ring, index) => {
+            if (index < scores.length) {
+              const score = scores[index];
+              const scoreValue = scoreValues[index];
+              
+              // Animate the ring by changing transform
+              const rotation = 45 + ((score / 100) * 360);
+              ring.style.transform = `rotate(${rotation}deg)`;
+              
+              // Animate the score value
+              let currentScore = 0;
+              const animationDuration = 1500; // ms
+              const intervalTime = 30; // ms
+              const increment = score / (animationDuration / intervalTime);
+              
+              const interval = setInterval(() => {
+                currentScore += increment;
+                if (currentScore >= score) {
+                  currentScore = score;
+                  clearInterval(interval);
+                }
+                scoreValue.textContent = Math.round(currentScore);
+              }, intervalTime);
+            }
+          });
+          
+          // Animate the overall grade
+          const gradeValue = document.querySelector('.score-value');
+          const grades = ['F', 'D', 'C', 'B', 'A'];
+          let gradeIndex = 0;
+          
+          const gradeInterval = setInterval(() => {
+            gradeValue.textContent = grades[gradeIndex];
+            gradeIndex++;
+            
+            if (gradeIndex >= grades.length - 2) { // Stop at 'B'
+              gradeValue.textContent = 'B';
+              clearInterval(gradeInterval);
+            }
+          }, 300);
+        }
+        
+        // Animate chart bars
+        function animateChartBars() {
+          const bars = document.querySelectorAll('.benchmark-chart .bar');
+          const values = [40, 75, 95]; // Bar height percentages
+          
+          bars.forEach((bar, index) => {
+            // Reset height first
+            bar.style.height = '0px';
+            
+            // Then animate to the final height
+            setTimeout(() => {
+              bar.style.height = `${values[index]}px`;
+              bar.querySelector('.bar-value').textContent = `${values[index]}%`;
+            }, 100);
+          });
+        }
+        
+        // Create some initial sparkles
+        setTimeout(() => {
+          createSparkles(10);
+        }, 1000);
+      });
+    </script>
   </body>
 </html>
+
